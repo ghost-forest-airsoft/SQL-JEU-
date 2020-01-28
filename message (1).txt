@@ -1,0 +1,105 @@
+CREATE TABLE IF NOT EXISTS CLIENT(
+     idClient INT NOT NULL AUTO_INCREMENT,
+     nomClient VARCHAR(100) NOT NULL,
+     PrenomClient VARCHAR(100) NOT NULL,
+     AdresseCLient VARCHAR(100) NOT NULL,
+     mailClient VARCHAR(100) NOT NULL,
+     PRIMARY KEY (idCLient)
+);
+CREATE TABLE IF NOT EXISTS COMMANDE(
+     idCommande INT NOT NULL AUTO_INCREMENT,
+     datecommande DATE NOT NULL,
+     Prixtotale VARCHAR(100) NOT NULL,
+     fk_idClient INT NOT NULL,
+     PRIMARY KEY (idCommande),
+     FOREIGN KEY(fk_idClient) REFERENCES CLIENT(idClient)
+  
+);
+CREATE TABLE IF NOT EXISTS CAVE(
+     idCave INT NOT NULL AUTO_INCREMENT,
+     nomCave VARCHAR(100) NOT NULL,
+     fk_idVille INT NOT NULL,
+     PRIMARY KEY (idCave),
+     FOREIGN KEY(fk_idVille) REFERENCES VILLE(idVille)
+);
+CREATE TABLE IF NOT EXISTS BOUTEILLE(
+     idBouteille INT NOT NULL AUTO_INCREMENT,
+     prixunitaire VARCHAR(100) NOT NULL,
+     nombouteille VARCHAR(100) NOT NULL,
+     PRIMARY KEY (idBouteille),
+     fk_idVin INT NOT NULL,
+     fk_idCave INT NOT NULL,
+     FOREIGN KEY(fk_idCave) REFERENCES CAVE(idCave),
+     FOREIGN KEY(fk_idVin) REFERENCES VIN(idVin)
+);
+CREATE TABLE IF NOT EXISTS TAILLE(
+     idTaille INT NOT NULL AUTO_INCREMENT,
+     nomTaille VARCHAR(100) NOT NULL,
+     quantite VARCHAR(100) NOT NULL,
+     PRIMARY KEY (idTaille)
+);
+CREATE TABLE IF NOT EXISTS VILLE(
+     idVille INT NOT NULL AUTO_INCREMENT,
+     nomVille VARCHAR(100) NOT NULL,
+     cpville VARCHAR(100) NOT NULL,
+     PRIMARY KEY (idVille)
+);
+CREATE TABLE IF NOT EXISTS DOMAINE(
+     idDomaine INT NOT NULL AUTO_INCREMENT,
+     nomDomaine VARCHAR(100) NOT NULL,
+     PRIMARY KEY (idDomaine)
+);
+CREATE TABLE IF NOT EXISTS VIN(
+     idVin INT NOT NULL AUTO_INCREMENT,
+     millesisme VARCHAR(100) NOT NULL,
+     degredalcool INT NOT NULL,
+     nomVin VARCHAR(100) NOT NULL,
+     fk_idCepage INT NOT NULL,
+     fk_idCouleur INT NOT NULL,
+     PRIMARY KEY (idVin),
+     FOREIGN KEY(fk_idCepage) REFERENCES CEPAGE(idCepage),
+     FOREIGN KEY(fk_idCouleur) REFERENCES COULEUR(idCouleur)
+);
+CREATE TABLE IF NOT EXISTS CEPAGE(
+     idCepage INT NOT NULL AUTO_INCREMENT,
+     nomCepage VARCHAR(100) NOT NULL,
+     PRIMARY KEY (idCepage)
+);
+CREATE TABLE IF NOT EXISTS COULEUR(
+     idCouleur INT NOT NULL AUTO_INCREMENT,
+     nomCouleur VARCHAR(100) NOT NULL,
+     PRIMARY KEY (idCouleur)
+);
+CREATE TABLE IF NOT EXISTS COMMANDE_CONCERNE_BOUTEILLE(
+     idComdecoul INT NOT NULL AUTO_INCREMENT,
+     PRIMARY KEY (idComdecoul),
+     fk_idCommande INT NOT NULL,
+     fk_idBouteille INT NOT NULL,
+     FOREIGN KEY(fk_idCommande) REFERENCES COMMANDE(idCommande),
+     FOREIGN KEY(fk_idBouteille) REFERENCES BOUTEILLE(idBouteille)
+);
+CREATE TABLE IF NOT EXISTS BOUTEILLE_POSSEDE_FORMAT(
+     idBoutpossfor INT NOT NULL AUTO_INCREMENT,
+     fk_idBouteilleF INT NOT NULL,
+     fk_idFormat INT NOT NULL,
+     PRIMARY KEY (idBoutpossfor),
+     FOREIGN KEY(fk_idBouteilleF) REFERENCES BOUTEILLE(idBouteille),
+     FOREIGN KEY(fk_idFormat) REFERENCES FORMAT(idFormat)
+);
+CREATE TABLE IF NOT EXISTS VIN_PROVIENT_DOMAINE(
+     idVinprodom INT NOT NULL AUTO_INCREMENT,
+     fk_idVinP INT NOT NULL,
+     fk_idDomaine INT NOT NULL,
+     PRIMARY KEY (idVinprodom),
+     FOREIGN KEY(fk_idVinP) REFERENCES VIN(idVin),
+     FOREIGN KEY(fk_idBouteille) REFERENCES BOUTEILLE(idBouteille)
+);
+);
+CREATE TABLE IF NOT EXISTS DOMAINE_LOCALISE_VILLE(
+     idDomlocville INT NOT NULL AUTO_INCREMENT,
+     fk_idDomaineL INT NOT NULL,
+     fk_idVilleL INT NOT NULL,
+     PRIMARY KEY (idDomlocville),
+     FOREIGN KEY(fk_idDomaineL) REFERENCES DOMAINE(idDomaine),
+     FOREIGN KEY(fk_idVilleL) REFERENCES VILLE(idVille)
+);
